@@ -1,72 +1,69 @@
-# 🎄 Grand Luxury Interactive 3D Christmas Tree
+# Make a Wish · 手势生日蛋糕
 
-> 一个基于 **React**, **Three.js (R3F)** 和 **AI 手势识别** 的高保真 3D 圣诞树 Web 应用。
+这是一个纯 HTML、CSS、JavaScript 的静态网页，不依赖 GPT 或任何聊天平台。
 
-这个项目不仅仅是一棵树，它是一个承载记忆的交互式画廊。成百上千个粒子、璀璨的彩灯和悬浮的拍立得照片共同组成了一棵奢华的圣诞树。用户可以通过手势控制树的形态（聚合/散开）和视角旋转，体验电影级的视觉盛宴。
+## 打开方式
 
-![Project Preview](public/preview.png)
-*(注：建议在此处上传一张你的项目运行截图)*
+- 在线分享：使用 GitHub Pages 发布后，把网页链接发给任何人即可。
+- 本机预览：双击 `index.html` 可以查看并使用触控按钮。
+- 摄像头手势：浏览器通常要求 HTTPS 或 localhost，因此推荐使用 GitHub Pages 链接测试。
 
-## ✨ 核心特性
+## 手势顺序
 
-* **极致视觉体验**：由 45,000+ 个发光粒子组成的树身，配合动态光晕 (Bloom) 和辉光效果，营造梦幻氛围。
-* **记忆画廊**：照片以“拍立得”风格悬浮在树上，每一张都是一个独立的发光体，支持双面渲染。
-* **AI 手势控制**：无需鼠标，通过摄像头捕捉手势即可控制树的形态（聚合/散开）和视角旋转。
-* **丰富细节**：包含动态闪烁的彩灯、飘落的金银雪花、以及随机分布的圣诞礼物和糖果装饰。
-* **高度可定制**：**支持用户轻松替换为自己的照片，并自由调整照片数量。**
+1. ✊ 握拳：粒子聚合成双层蛋糕。
+2. ✌️ 比耶手势：点亮代表 22 岁的两支数字“2”蜡烛。
+3. 🖐️ 张开手掌：蛋糕散开并释放拍立得回忆。
+4. 🤏 拇指与食指捏合：选中并放大照片。
 
-## 🛠️ 技术栈
+手机和电脑均可以使用。摄像头不可用时，点击页面底部对应按钮也能完成全部流程。
 
-* **框架**: React 18, Vite
-* **3D 引擎**: React Three Fiber (Three.js)
-* **工具库**: @react-three/drei, Maath
-* **后期处理**: @react-three/postprocessing
-* **AI 视觉**: MediaPipe Tasks Vision (Google)
+## 替换照片
 
-## 🚀 快速开始
+打开 `assets/photos` 文件夹，把照片依次重命名为：
 
-### 1. 环境准备
-确保你的电脑已安装 [Node.js](https://nodejs.org/) (建议 v18 或更高版本)。
+```text
+01.jpg
+02.jpg
+03.jpg
+04.jpg
+05.jpg
+06.jpg
+```
 
-### 2. 安装依赖
-在项目根目录下打开终端，运行：```bash npm install
-### 3. 启动项目
-npm run dev
-### 🖼️ 自定义照片
-### 1. 准备照片
-找到项目目录下的 public/photos/ 文件夹。
+替换同名文件后刷新网页即可，不需要改 HTML。
 
-顶端大图/封面图：命名为 top.jpg（将显示在树顶的立体五角星上）。
+照片下方的文字在 `config.js` 中修改。如果需要超过 6 张照片，继续添加 `07.jpg`、`08.jpg`，并在 `config.js` 的 `defaultPhotos` 中复制增加对应条目。
 
-树身照片：命名为 1.jpg, 2.jpg, 3.jpg ... 依次类推。
+页面右上角的“选择照片”用于临时预览，刷新后会恢复为 `assets/photos` 文件夹内的照片。
 
-建议：使用正方形或 4:3 比例的图片，文件大小不宜过大（建议单张 500kb 以内以保证流畅度）
-### 2. 替换照片
-直接将你自己的照片复制到 public/photos/ 文件夹中，覆盖原有的图片即可。请保持文件名格式不变（1.jpg, 2.jpg 等）。
-### 3. 修改照片数量 (增加或减少)
-如果你放入了更多照片（例如从默认的 31 张增加到 100 张），需要修改代码以通知程序加载它们。
-打开文件：src/App.tsx
-找到大约 第 19 行 的代码：// --- 动态生成照片列表 (top.jpg + 1.jpg 到 31.jpg) ---
-const TOTAL_NUMBERED_PHOTOS = 31; // <--- 修改这个数字！
-### 🖐️ 手势控制说明
-* **本项目内置了 AI 手势识别系统，请站在摄像头前进行操作（屏幕右下角有 DEBUG 按钮可查看摄像头画面）**：
-🖐 张开手掌 (Open Palm)	Disperse (散开)	圣诞树炸裂成漫天飞舞的粒子和照片
-✊ 握紧拳头 (Closed Fist)	Assemble (聚合)	所有元素瞬间聚合成一棵完美的圣诞树
-👋 手掌左右移动	旋转视角	手向左移，树向左转；手向右移，树向右转
-👋 手掌上下移动	俯仰视角	手向上移，视角抬高；手向下移，视角降低
-### ⚙️ 进阶配置
-* **如果你熟悉代码，可以在 src/App.tsx 中的 CONFIG 对象里调整更多视觉参数**：
-  const CONFIG = {
-  colors: { ... }, // 修改树、灯光、边框的颜色
-  counts: {
-    foliage: 15000,   // 修改树叶粒子数量 (配置低可能会卡)
-    ornaments: 300,   // 修改悬挂的照片/拍立得数量
-    lights: 400       // 修改彩灯数量
-  },
-  tree: { height: 22, radius: 9 }, // 修改树的大小
-  // ...
-};
-### 📄 License
-MIT License. Feel free to use and modify for your own holiday celebrations!
-### Merry Christmas! 🎄✨
+## 建议的照片规格
 
+- JPG 格式
+- 单张小于 2 MB
+- 竖图、横图均可，网页会自动居中裁切
+- 建议至少准备 4 张，最多 16 张
+
+## 修改标题和颜色
+
+直接编辑 `config.js`：
+
+- `title`：首页标题
+- `age`：生日年龄（当前为 22）
+- `name`：顶部小字
+- `birthdayDate`：拍立得日期或祝福
+- `cakeColors`：蛋糕、蜡烛与火焰颜色
+- `caption`：每张照片下面的文字
+
+## 依赖
+
+网页通过公共 CDN 加载 Three.js 和 MediaPipe Hands。手势识别在浏览器中运行，网站本身没有服务器，也不会把照片上传到 GPT。
+
+## 开源参考
+
+本项目结合并改写了以下 MIT 开源项目中的成熟思路：
+
+- [gesture-Christmas_tree-3d_with_photo](https://github.com/electronicminer/gesture-Christmas_tree-3d_with_photo)：手掌尺寸归一化、握拳/张开/捏合阈值与粒子状态切换。
+- [gesture-particles](https://github.com/Wlarskog/gesture-particles)：手指闭合度计算、平滑与防抖思路。
+- [happybirthday](https://github.com/patrick-paul/happybirthday)：生日仪式节奏、蜡烛和庆祝反馈参考。
+
+详细版权说明见 `THIRD_PARTY_NOTICES.md`。

@@ -1,13 +1,119 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>christmas-tree</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#120d1e" />
+    <meta
+      name="description"
+      content="用手势点亮一只粒子生日蛋糕，再从星光里捏起一张拍立得回忆。"
+    />
+    <title>Make a Wish · 手势生日蛋糕</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="scene" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="回到开始">
+        <span class="brand-mark">✦</span>
+        <span>MAKE A WISH</span>
+      </a>
+      <div class="top-actions">
+        <button class="quiet-button" id="soundToggle" type="button" aria-pressed="true">
+          <span aria-hidden="true">♪</span><span class="desktop-label">声音</span>
+        </button>
+        <label class="upload-button" for="photoInput">
+          <span aria-hidden="true">＋</span><span>选择照片</span>
+        </label>
+        <input id="photoInput" type="file" accept="image/*" multiple hidden />
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-copy" aria-live="polite">
+        <p class="eyebrow" id="eyebrow">A LITTLE RITUAL FOR YOUR DAY</p>
+        <h1 id="heroTitle">先握紧一份愿望</h1>
+        <p class="hero-description" id="heroDescription">
+          对着镜头握拳，散落的星光会为你做成一只双层蛋糕。
+        </p>
+      </section>
+
+      <section class="gesture-progress" aria-label="生日仪式进度">
+        <ol>
+          <li class="gesture-step is-active" data-step="cake">
+            <button type="button" data-action="cake" aria-label="握拳，聚合蛋糕">
+              <span class="gesture-icon">✊</span>
+              <span class="step-copy"><b>握拳</b><small>聚合蛋糕</small></span>
+              <span class="step-state">01</span>
+            </button>
+          </li>
+          <li class="gesture-step" data-step="candles">
+            <button type="button" data-action="candles" aria-label="比耶，点亮蜡烛">
+              <span class="gesture-icon">✌️</span>
+              <span class="step-copy"><b>比耶</b><small>点亮蜡烛</small></span>
+              <span class="step-state">02</span>
+            </button>
+          </li>
+          <li class="gesture-step" data-step="scatter">
+            <button type="button" data-action="scatter" aria-label="张开手掌，释放回忆">
+              <span class="gesture-icon">🖐️</span>
+              <span class="step-copy"><b>张开</b><small>释放回忆</small></span>
+              <span class="step-state">03</span>
+            </button>
+          </li>
+          <li class="gesture-step" data-step="focus">
+            <button type="button" data-action="focus" aria-label="捏合，拾起照片">
+              <span class="gesture-icon">🤏</span>
+              <span class="step-copy"><b>捏合</b><small>拾起照片</small></span>
+              <span class="step-state">04</span>
+            </button>
+          </li>
+        </ol>
+      </section>
+
+      <aside class="camera-card" id="cameraCard">
+        <div class="camera-preview">
+          <video id="cameraVideo" playsinline muted></video>
+          <canvas id="cameraOverlay"></canvas>
+          <div class="camera-placeholder" id="cameraPlaceholder">
+            <span class="camera-orbit"></span>
+            <span>等待开启镜头</span>
+          </div>
+        </div>
+        <div class="camera-meta">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="cameraStatus">触控模式可直接体验</span>
+          <span class="gesture-readout" id="gestureReadout">READY</span>
+        </div>
+        <button id="startCamera" class="camera-button" type="button">开启手势控制</button>
+      </aside>
+
+      <button class="restart-button" id="restartButton" type="button" hidden>
+        <span aria-hidden="true">↺</span> 再许一次愿
+      </button>
+    </main>
+
+    <div class="photo-toolbar" id="photoToolbar" hidden>
+      <button type="button" id="previousPhoto" aria-label="上一张照片">←</button>
+      <p><span id="photoCounter">01 / 06</span><small>张开手掌返回星光</small></p>
+      <button type="button" id="nextPhoto" aria-label="下一张照片">→</button>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/hands.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
